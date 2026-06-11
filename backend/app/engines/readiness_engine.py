@@ -1,0 +1,2 @@
+"""Readiness scoring engine placeholder."""
+

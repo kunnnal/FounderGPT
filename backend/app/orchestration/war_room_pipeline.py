@@ -1,0 +1,2 @@
+"""War room pipeline placeholder."""
+
