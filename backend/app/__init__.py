@@ -1,0 +1,1 @@
+"""FounderGPT application package."""
