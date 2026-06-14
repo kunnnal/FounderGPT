@@ -1,8 +1,17 @@
 import type { DemoPayload, WarRoomRequest, WarRoomResponse } from "@/lib/types";
 import { defaultWarRoomRequest } from "./defaults";
 
-export const API_BASE_URL =
-  process.env.NEXT_PUBLIC_API_BASE_URL ?? "http://localhost:8000";
+export const API_BASE_URL = (() => {
+  if (process.env.NEXT_PUBLIC_API_BASE_URL) {
+    return process.env.NEXT_PUBLIC_API_BASE_URL;
+  }
+  if (typeof window !== "undefined") {
+    // Resolve hostname dynamically for local network/IP device testing
+    const hostname = window.location.hostname;
+    return `http://${hostname}:8000`;
+  }
+  return "http://localhost:8000";
+})();
 
 async function requestJson<T>(
   path: string,

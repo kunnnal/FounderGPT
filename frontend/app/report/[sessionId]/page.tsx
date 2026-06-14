@@ -1,19 +1,20 @@
 "use client";
 
 import Link from "next/link";
-import { useEffect, useState } from "react";
+import { useEffect, useState, use } from "react";
 
 import { WarRoomResults } from "@/components/WarRoomResults";
 import { getSession } from "@/lib/api";
 import type { WarRoomResponse } from "@/lib/types";
 
 type ReportPageProps = {
-  params: {
+  params: Promise<{
     sessionId: string;
-  };
+  }>;
 };
 
 export default function ReportPage({ params }: ReportPageProps) {
+  const { sessionId } = use(params);
   const [session, setSession] = useState<WarRoomResponse | null>(null);
   const [error, setError] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(true);
@@ -25,7 +26,7 @@ export default function ReportPage({ params }: ReportPageProps) {
       setError(null);
       setIsLoading(true);
       try {
-        const response = await getSession(params.sessionId);
+        const response = await getSession(sessionId);
         if (active) {
           setSession(response);
         }
@@ -49,7 +50,7 @@ export default function ReportPage({ params }: ReportPageProps) {
     return () => {
       active = false;
     };
-  }, [params.sessionId]);
+  }, [sessionId]);
 
   return (
     <main className="page-shell">
